@@ -1,0 +1,25 @@
+name: Newman Run
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: ''
+        required: true
+        default: 'PROD'
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  newman:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+      - uses: matt-ball/newman-action@master
+        with:
+          collection: collections/Metadata.json
+          environment: "environments/${{ github.event.inputs.environment }}.json"
+          globals: globals.json
+          iterationData: data.json
+          iterationCount: 1

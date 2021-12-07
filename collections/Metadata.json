@@ -1,0 +1,275 @@
+{
+	"info": {
+		"_postman_id": "a21069a7-b255-4567-ab35-2a2f3ac970ba",
+		"name": "Metadata",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Main Page",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const $ = cheerio.load(pm.response.text());",
+							"",
+							"pm.test(\"The response properties\", () => {",
+							"    pm.expect($(\"h3\").text()).to.eql('Metadata Server Mock:');",
+							"    pm.expect($(\"ul > li:nth-child(\" + pm.iterationData.get(\"order\") + \") > a\").text()).to.eql('metadata/' + pm.iterationData.get(\"subject\"));",
+							"    pm.expect($(\"ul > li:nth-child(\" + pm.iterationData.get(\"order\") + \") > a\").attr('href')).to.eql('metadata/' + pm.iterationData.get(\"subject\"));",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}",
+					"host": [
+						"{{base_url}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metadata All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The response properties\", () => {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.subject).to.eql(pm.iterationData.get(\"subject\"));",
+							"    pm.expect(responseJson.url.value).to.eql(pm.iterationData.get(\"url\"));",
+							"    pm.expect(responseJson.name.value).to.eql(pm.iterationData.get(\"name\"));",
+							"    pm.expect(responseJson.ticker.value).to.eql(pm.iterationData.get(\"ticker\"));",
+							"    pm.expect(responseJson.decimals.value).to.eql(pm.iterationData.get(\"decimals\"));",
+							"    pm.expect(responseJson.description.value).to.eql(pm.iterationData.get(\"description\"));",
+							"});",
+							"",
+							"// TODO Verify signatures"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/metadata/{{subject}}",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"metadata",
+						"{{subject}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metadata Properties Name",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The response properties\", () => {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.value).to.eql(pm.iterationData.get(\"name\"));",
+							"    // TODO Verify signatures",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/metadata/{{subject}}/properties/name",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"metadata",
+						"{{subject}}",
+						"properties",
+						"name"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Subjects",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The response properties\", () => {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.subjects[0].subject).to.eql(pm.iterationData.get(\"subject\"));",
+							"    pm.expect(responseJson.subjects[0].url.value).to.eql(pm.iterationData.get(\"url\"));",
+							"    pm.expect(responseJson.subjects[0].name.value).to.eql(pm.iterationData.get(\"name\"));",
+							"    pm.expect(responseJson.subjects[0].ticker.value).to.eql(pm.iterationData.get(\"ticker\"));",
+							"    pm.expect(responseJson.subjects[0].decimals.value).to.eql(pm.iterationData.get(\"decimals\"));",
+							"    pm.expect(responseJson.subjects[0].description.value).to.eql(pm.iterationData.get(\"description\"));",
+							"    // TODO verify order of responses",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subjects\": [\n        \"{{subject}}\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/metadata/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"metadata",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Subjects & Properties All",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The response properties\", () => {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.subjects[0].hasOwnProperty('name')).to.eql(true);",
+							"    pm.expect(responseJson.subjects[0].hasOwnProperty('description')).to.eql(true);",
+							"    pm.expect(responseJson.subjects[0].hasOwnProperty('url')).to.eql(true);",
+							"    // TODO verify order of responses",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subjects\": [\n        \"{{subject}}\"\n    ],\n    \"properties\": [\n        \"name\",\n        \"description\",\n        \"url\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/metadata/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"metadata",
+						"query"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Query Subjects & Properties Description",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"The response properties\", () => {",
+							"    const responseJson = pm.response.json();",
+							"    pm.expect(responseJson.subjects[0].hasOwnProperty('name')).to.eql(false);",
+							"    pm.expect(responseJson.subjects[0].hasOwnProperty('description')).to.eql(true);",
+							"    pm.expect(responseJson.subjects[0].hasOwnProperty('url')).to.eql(false);",
+							"    // TODO verify order of responses",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"subjects\": [\n        \"{{subject}}\"\n    ],\n    \"properties\": [\n        \"description\"\n    ]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/metadata/query",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"metadata",
+						"query"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status test 200\", async function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"",
+					"pm.test(\"Response time is less than 1000ms\", () => {",
+					"  pm.expect(pm.response.responseTime).to.be.below(Number(pm.globals.get(\"defaultResponseTime\")));",
+					"});"
+				]
+			}
+		}
+	]
+}

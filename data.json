@@ -1,0 +1,20 @@
+[
+	{
+		"subject": "919e8a1922aaa764b1d66407c6f62244e77081215f385b60a62091494861707079436f696e",
+		"url": "https://happy.io",
+		"name": "HappyCoin",
+		"ticker": "HAPP",
+		"decimals": 6,
+		"description": "Coin with asset name - and everyone is happy!!!",
+		"order": 2
+	},
+	{
+		"subject": "2048c7e09308f9138cef8f1a81733b72e601d016eea5eef759ff2933416d617a696e67436f696e",
+		"url": "https://amazing.io",
+		"name": "Amazing Coin",
+		"ticker": "AMAZ",
+		"decimals": 3,
+		"description": "亜哀挨愛曖悪 АаБбВвГгДдЕеЁёЖжЗз  aąbcćdeęfghijklłmnoóprsś",
+		"order": 1
+	}
+]
